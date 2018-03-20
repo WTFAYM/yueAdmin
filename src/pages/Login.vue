@@ -3,10 +3,10 @@
     <el-form class="login-container demo-ruleForm" ref="loginForm2" :model="loginForm" :rules="loginRules">
       <h3 class="title">系统登录</h3>
       <el-form-item prop="account">
-        <el-input type="text" placeholder="账号" v-model="loginForm.account" auto-complete="off"></el-input>
+        <el-input type="text" placeholder="账号" :clearable="true" v-model="loginForm.account"></el-input>
       </el-form-item>
       <el-form-item prop="checkPass">
-        <el-input type="password" placeholder="密码" v-model="loginForm.checkPass" auto-complete="off"></el-input>
+        <el-input type="password" placeholder="密码" clearable v-model="loginForm.checkPass"></el-input>
       </el-form-item>
       <el-checkbox v-model="checked" class="remember" checked>记住密码</el-checkbox>
       <el-form-item style="width:100%;">

@@ -13,33 +13,32 @@
           </el-menu-item>
           <el-submenu index="2">
             <template slot="title">
-              <i class="el-icon-message"></i>
+              <i class="el-icon-star-on"></i>
               <span slot="title">用户管理</span>
             </template>
             <el-menu-item :index="'/user'">用户列表</el-menu-item>
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
-              <i class="el-icon-setting"></i>
-              <span slot="title">会员卡管理</span>
+              <i class="el-icon-star-on"></i>
+              <span slot="title">活动管理</span>
             </template>
-            <el-menu-item index="/cardList">会员卡列表</el-menu-item>
+            <el-menu-item index="/cardList">活动列表</el-menu-item>
             <el-menu-item index="3-2">添加会员卡</el-menu-item>
           </el-submenu>
           <el-submenu index="4">
             <template slot="title">
               <i class="el-icon-star-on"></i>
-              <span slot="title">商家管理</span>
+              <span slot="title">动态管理</span>
             </template>
-            <el-menu-item index="/merchantList">商家列表</el-menu-item>
+            <el-menu-item index="/merchantList">动态列表</el-menu-item>
             <el-menu-item index="4-2">添加商家</el-menu-item>
           </el-submenu>
           <el-submenu index="5">
             <template slot="title">
               <i class="el-icon-warning"></i>
-              <span slot="title">管理员管理</span>
+              <span slot="title">管理员</span>
             </template>
-            <el-menu-item index="/managerList">管理员列表</el-menu-item>
             <el-menu-item index="/customService">客服</el-menu-item>
           </el-submenu>
         </el-menu>

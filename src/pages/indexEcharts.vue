@@ -2,7 +2,6 @@
   <section class="cont">
     <el-col style="height: 100%">
       <div id="myECharts" style="width: 100%;height: 100%">
-
       </div>
     </el-col>
   </section>

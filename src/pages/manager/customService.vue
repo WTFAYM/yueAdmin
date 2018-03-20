@@ -2,7 +2,6 @@
   <section style="height: 100%">
     <transition name="slide-right">
       <div class="chatting">
-
         <!-- 聊天界面头部 -->
         <div class="chatting-header">
           <div class="chatting-title">
@@ -13,7 +12,7 @@
         <!-- 聊天内容区域 -->
         <div ref="chattingContent" id="chattingContent" class="chatting-content">
           <div class="chatTip">
-            客服小卡,很高兴为您服务~
+            客服小爱,很高兴为您服务~
           </div>
           <div v-for="item in msg">
 
@@ -22,7 +21,7 @@
               </div>
               <div class="msg-from">
                 <span class="loc"></span>
-                <span class="msg-author">ALMON</span>
+                <span class="msg-author">Admin</span>
                 <img src="https://icdn.microzz.com/20170426_vue_chat/icon-avatar8.svg" alt="">
               </div>
               <div class="msg-content">{{item.content}}</div>
@@ -33,19 +32,15 @@
               </div>
               <div class="msg-from">
                 <img src="https://icdn.microzz.com/20170426_vue_chat/icon-avatar1.svg" alt="">
-                <span class="msg-author">小卡</span>
+                <span class="msg-author">小爱</span>
               </div>
               <div class="msg-content">{{item.content}}</div>
             </div>
-
           </div>
-
-
         </div>
-
         <!-- 输入区域 -->
         <div class="chatting-input">
-          <input @keyup.enter="send" v-model.trim="inputContent" placeholder="有什么问题和小卡聊聊吧">
+          <input @keyup.enter="send" v-model.trim="inputContent" placeholder="有什么问题和小爱聊聊吧">
           <button @click="send">发送</button>
         </div>
 

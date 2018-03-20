@@ -1,5 +1,4 @@
 <template>
-
   <el-col :span="24" class="header_container clear">
     <el-col :span="10" class="logo" v-show="!Collapse">
       ShareCard
@@ -14,13 +13,12 @@
       <el-dropdown trigger="hover">
         <div class="el-dropdown-link userInfo-inner">
           <div>
-            <span>ALMON</span>
-            <img src="https://icdn.microzz.com/20170426_vue_chat/icon-ai.svg"/>
+            <span>Admin</span>
+            <img src="http://139.199.188.40/img/01.jpg"/>
           </div>
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item style="padding: 0 5px">我的消息</el-dropdown-item>
-          <el-dropdown-item style="padding: 0 5px">设置</el-dropdown-item>
           <el-dropdown-item style="padding: 0 5px" @click.native="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
