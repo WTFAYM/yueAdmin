@@ -12,7 +12,7 @@
         <!-- 聊天内容区域 -->
         <div ref="chattingContent" id="chattingContent" class="chatting-content">
           <div class="chatTip">
-            客服小爱,很高兴为您服务~
+            很高兴为您服务~
           </div>
           <div v-for="item in msg">
 
@@ -32,7 +32,7 @@
               </div>
               <div class="msg-from">
                 <img src="https://icdn.microzz.com/20170426_vue_chat/icon-avatar1.svg" alt="">
-                <span class="msg-author">小爱</span>
+                <span class="msg-author">校园助手</span>
               </div>
               <div class="msg-content">{{item.content}}</div>
             </div>
@@ -40,10 +40,9 @@
         </div>
         <!-- 输入区域 -->
         <div class="chatting-input">
-          <input @keyup.enter="send" v-model.trim="inputContent" placeholder="有什么问题和小爱聊聊吧">
+          <input @keyup.enter="send" v-model.trim="inputContent" placeholder="校园助手，在线聊天！">
           <button @click="send">发送</button>
         </div>
-
       </div>
     </transition>
   </section>

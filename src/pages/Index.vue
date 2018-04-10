@@ -7,7 +7,7 @@
       <el-col :span="24" class="menu">
         <el-menu :default-active="$route.path" class="el-menu-vertical-demo" unique-opened router
                  :collapse="isCollapse">
-          <el-menu-item :index="'/Echarts'">
+          <el-menu-item :index="'/home'">
             <i class="el-icon-menu"></i>
             <span slot="title">首页</span>
           </el-menu-item>
@@ -23,18 +23,46 @@
               <i class="el-icon-star-on"></i>
               <span slot="title">活动管理</span>
             </template>
-            <el-menu-item index="/cardList">活动列表</el-menu-item>
-            <el-menu-item index="3-2">添加会员卡</el-menu-item>
+            <el-menu-item index="/Activity">活动列表</el-menu-item>
           </el-submenu>
           <el-submenu index="4">
             <template slot="title">
               <i class="el-icon-star-on"></i>
               <span slot="title">动态管理</span>
             </template>
-            <el-menu-item index="/merchantList">动态列表</el-menu-item>
-            <el-menu-item index="4-2">添加商家</el-menu-item>
+            <el-menu-item index="/Dynamic">动态列表</el-menu-item>
           </el-submenu>
           <el-submenu index="5">
+            <template slot="title">
+              <i class="el-icon-star-on"></i>
+              <span slot="title">树洞管理</span>
+            </template>
+            <el-menu-item index="/Tree">树洞列表</el-menu-item>
+          </el-submenu>
+          <el-submenu index="6">
+            <template slot="title">
+              <i class="el-icon-star-on"></i>
+              <span slot="title">标签管理</span>
+            </template>
+            <el-menu-item index="/Label">标签列表</el-menu-item>
+          </el-submenu>
+          <el-submenu index="7">
+            <template slot="title">
+              <i class="el-icon-star-on"></i>
+              <span slot="title">专栏管理</span>
+            </template>
+            <el-menu-item index="/Gather">专栏列表</el-menu-item>
+            <el-menu-item index="/addGather">添加专栏</el-menu-item>
+          </el-submenu>
+          <el-submenu index="8">
+            <template slot="title">
+              <i class="el-icon-star-on"></i>
+              <span slot="title">推送管理</span>
+            </template>
+            <el-menu-item index="/Spread">推送列表</el-menu-item>
+            <el-menu-item index="/addSpread">添加推送</el-menu-item>
+          </el-submenu>
+          <el-submenu index="9">
             <template slot="title">
               <i class="el-icon-warning"></i>
               <span slot="title">管理员</span>
@@ -44,9 +72,7 @@
         </el-menu>
       </el-col>
       <el-col :span="24" class="main">
-        <keep-alive>
-          <router-view></router-view>
-        </keep-alive>
+        <router-view></router-view>
       </el-col>
     </el-row>
   </div>
@@ -54,6 +80,7 @@
 
 <script>
   import HeaderTop from '../components/header.vue'
+
   export default {
     data () {
       return {

@@ -49,11 +49,9 @@
             this.$http.post('/api/loginData', loginParam).then(res => {
               this.logining = false
               if (res.data.username === loginParam.username && res.data.password === loginParam.password) {
+                sessionStorage.setItem('admin', loginParam)
                 this.$router.push({
-                  path: 'Index'
-//                  params: {
-//                    userRealName: res.data.realName
-//                  }
+                  name: 'home'
                 })
               } else {
                 console.log('登录失败')

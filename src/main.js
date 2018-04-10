@@ -10,7 +10,12 @@ import Element from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import VueLazyload from 'vue-lazyload'
 import store from './vuex/store'
+import VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 
+Vue.use(VueQuillEditor, /* { default global options } */)
 Vue.config.productionTip = false
 Vue.use(Element)
 // Vue.use(VueResource)
@@ -23,6 +28,21 @@ Vue.use(VueLazyload, {
   loading: './static/images/loading.gif',
   // the default is ['scroll', 'wheel', 'mousewheel', 'resize', 'animationend', 'transitionend']
   listenEvents: ['scroll']
+})
+router.beforeEach((to, form, next) => {
+  const nextRoute = ['home', 'user', 'dynamic', 'label', 'custom', 'spread', 'addSpread', 'tree', 'notFound', 'gather', 'addGather', 'activity']
+  let isLogin = sessionStorage.getItem('admin')
+  if (nextRoute.indexOf(to.name) >= 0) {
+    console.log(isLogin)
+    if (!isLogin) {
+      next(
+        {name: 'login'}
+      )
+      return
+      // router.replace({name: 'login'})
+    }
+  }
+  next()
 })
 /* eslint-disable no-new */
 new Vue({

@@ -1,120 +1,21 @@
 {
   "getUserData": [
     {
-      "time": "2017-09-22 8:00",
-      "username": "赵子龙",
-      "sex": "m",
-      "age": 23,
-      "phone": 18816793223,
-      "address": "广东省 广州市 海珠区艺苑南路260号金影花园807",
+      "avatar": "http://139.199.188.40/img/dog.jpg",
+      "state": 0,
+      "username": "HHH",
+      "gender": 1,
+      "phone": "18816793223",
+      "summary": "不怕神一样的对手就怕猪一样的对友",
       "birthday": "1994-08-23"
     },
     {
-      "time": "2017-09-22 8:00",
-      "username": "张飞",
-      "sex": "m",
-      "age": 12,
-      "phone": 18816793223,
-      "address": "gasfgs",
-      "birthday": "1994-08-23"
-    },
-    {
-      "time": "2017-09-22 18:00",
-      "username": "关云长",
-      "sex": "f",
-      "age": 15,
-      "phone": 18816793223,
-      "address": "",
-      "birthday": "1994-08-23"
-    },
-    {
-      "time": "2017-09-22 8:00",
-      "username": "刘备",
-      "sex": "m",
-      "age": 23,
-      "phone": 18816793223,
-      "address": "",
-      "birthday": "1994-08-23"
-    },
-    {
-      "time": "2017-09-22 8:00",
-      "username": "实力坑发哈客户分类的",
-      "sex": "m",
-      "age": 12,
-      "phone": 18816793223,
-      "address": "gasfgs",
-      "birthday": "1994-08-23"
-    },
-    {
-      "time": "2017-09-22 18:00",
-      "username": "lzh2",
-      "sex": "f",
-      "age": 15,
-      "phone": 18816793223,
-      "address": "",
-      "birthday": "1994-08-23"
-    },
-    {
-      "time": "2017-09-22 8:00",
-      "username": "lzh3",
-      "sex": "m",
-      "age": 23,
-      "phone": 18816793223,
-      "address": "",
-      "birthday": "1994-08-23"
-    },
-    {
-      "time": "2017-09-22 8:00",
-      "username": "lzh",
-      "sex": "m",
-      "age": 12,
-      "phone": 18816793223,
-      "address": "gasfgs",
-      "birthday": "1994-08-23"
-    },
-    {
-      "time": "2017-09-22 18:00",
-      "username": "lzh2",
-      "sex": "f",
-      "age": 15,
-      "phone": 18816793223,
-      "address": "",
-      "birthday": "1994-08-23"
-    },
-    {
-      "time": "2017-09-22 8:00",
-      "username": "lzh3",
-      "sex": "m",
-      "age": 23,
-      "phone": 18816793223,
-      "address": "",
-      "birthday": "1994-08-23"
-    },
-    {
-      "time": "2017-09-22 8:00",
-      "username": "lzh",
-      "sex": "m",
-      "age": 12,
-      "phone": 18816793223,
-      "address": "gasfgs",
-      "birthday": "1994-08-23"
-    },
-    {
-      "time": "2017-09-22 18:00",
-      "username": "lzh2",
-      "sex": "f",
-      "age": 15,
-      "phone": 18816793223,
-      "address": "",
-      "birthday": "1994-08-23"
-    },
-    {
-      "time": "2017-09-22 8:00",
-      "username": "lzh3",
-      "sex": "m",
-      "age": 23,
-      "phone": 18816793223,
-      "address": "",
+      "avatar": "http://139.199.188.40/img/dog.jpg",
+      "state": 0,
+      "username": "HHH",
+      "gender": 1,
+      "phone": "18816793223",
+      "summary": "不怕神一样的对手就怕猪一样的对友",
       "birthday": "1994-08-23"
     }
   ],
@@ -123,47 +24,5 @@
     "realName": "ALMON",
     "username": "admin",
     "password": "22606278"
-  },
-  "merchantsData": [
-    {
-      "id": 1,
-      "name": "kfc",
-      "imgUrl": "./static/images/test.jpg",
-      "addTimes": "2017-08-23",
-      "details": {
-        "profiles": "炸鸡汉堡",
-        "address": "是法撒旦个回复的福利火力发电可不可能萨克近两年"
-      }
-    },
-    {
-      "id": 2,
-      "name": "好吃的汉堡",
-      "imgUrl": "./static/images/test.jpg",
-      "addTimes": "2017-08-23",
-      "details": {
-        "profiles": "汉堡爱上对方的时光隧道工时费",
-        "address": "是法撒旦个回复的福利火力发电可不可能萨克近两年"
-      }
-    },
-    {
-      "id": 3,
-      "name": "真功夫",
-      "imgUrl": "./static/images/test.jpg",
-      "addTimes": "2017-08-23",
-      "details": {
-        "profiles": "Chinese kungfu",
-        "address": "是法撒旦个回复的福利火力发电可不可能萨克近两年"
-      }
-    },
-    {
-      "id": 4,
-      "name": "三个辣椒",
-      "imgUrl": "./static/images/test.jpg",
-      "addTimes": "2017-08-23",
-      "details": {
-        "profiles": "辣死你",
-        "address": "是法撒旦个回复的福利火力发电可不可能萨克近两年"
-      }
-    }
-  ]
+  }
 }
