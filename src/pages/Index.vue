@@ -35,18 +35,25 @@
           <el-submenu index="5">
             <template slot="title">
               <i class="el-icon-star-on"></i>
+              <span slot="title">评论管理</span>
+            </template>
+            <el-menu-item index="/Comment">评论列表</el-menu-item>
+          </el-submenu>
+          <el-submenu index="6">
+            <template slot="title">
+              <i class="el-icon-star-on"></i>
               <span slot="title">树洞管理</span>
             </template>
             <el-menu-item index="/Tree">树洞列表</el-menu-item>
           </el-submenu>
-          <el-submenu index="6">
+          <el-submenu index="7">
             <template slot="title">
               <i class="el-icon-star-on"></i>
               <span slot="title">标签管理</span>
             </template>
             <el-menu-item index="/Label">标签列表</el-menu-item>
           </el-submenu>
-          <el-submenu index="7">
+          <el-submenu index="8">
             <template slot="title">
               <i class="el-icon-star-on"></i>
               <span slot="title">专栏管理</span>
@@ -54,7 +61,7 @@
             <el-menu-item index="/Gather">专栏列表</el-menu-item>
             <el-menu-item index="/addGather">添加专栏</el-menu-item>
           </el-submenu>
-          <el-submenu index="8">
+          <el-submenu index="9">
             <template slot="title">
               <i class="el-icon-star-on"></i>
               <span slot="title">推送管理</span>
@@ -62,7 +69,7 @@
             <el-menu-item index="/Spread">推送列表</el-menu-item>
             <el-menu-item index="/addSpread">添加推送</el-menu-item>
           </el-submenu>
-          <el-submenu index="9">
+          <el-submenu index="10">
             <template slot="title">
               <i class="el-icon-warning"></i>
               <span slot="title">管理员</span>

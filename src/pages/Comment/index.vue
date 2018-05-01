@@ -1,16 +1,18 @@
 <template>
-  <section class="Tree">
-
-    <!--树洞列表-->
-    <el-table v-loading="listLoading" ref="multipleTable" @selection-change="selectTree" highlight-current-row
+  <section class="Comment">
+    <!--评论列表-->
+    <el-table v-loading="listLoading" ref="multipleTable" @selection-change="selectComment" highlight-current-row
               :data="treeList"
               style="width: 100%; ">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column type="index" width="60"></el-table-column>
+      <el-table-column prop="username" label="用户"></el-table-column>
       <el-table-column label="发布时间" width="200">
-        <template slot-scope="scope">{{ scope.row.ctime | DateTran }}</template>
+        <template slot-scope="scope">{{ scope.row.ctime }}</template>
       </el-table-column>
-      <el-table-column prop="content" label="内容">
+      <el-table-column prop="content" label="内容"></el-table-column>
+      <el-table-column label="状态">
+        <template slot-scope="scope">{{ scope.row.state }}</template>
       </el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
@@ -32,42 +34,36 @@
   </section>
 </template>
 <script>
+
   export default {
     data () {
       return {
-        total: 0,
+        total: 20,
         page: 1,
         pageSize: 10,
         listLoading: false,
         statNum: 0,
         endNum: 0,
         selectArr: [],
-        treeList: []
+        treeList: [
+          {
+            username: '小胡',
+            ctime: '2015-04-02 12:00',
+            content: '好累啊',
+            state: '0'
+          },
+          {
+            username: '小订',
+            ctime: '2015-04-02 12:00',
+            content: '好累啊',
+            state: '1'
+          }
+        ]
       }
     },
-    created () {
-      this.getList()
-    },
     methods: {
-      getList () {
-        let params = {
-          currentPage: this.page
-        }
-        this.$http.post('api/tree/list', params).then(res => {
-          if (res.data.code == '200') {
-            this.total = res.data.data.recordCount
-            this.treeList = res.data.data.data
-            this.listLoading = false
-          }
-        }, err => {
-          console.log(err)
-          this.listLoading = false
-        })
-      },
-      selectTree (val) {
-        this.selectArr = val.map(item => {
-          return item.tid
-        })
+      selectComment (val) {
+        this.selectArr = val
       },
       handleDelete (index, row) {
         this.$confirm('确认删除？', '提示', {
@@ -75,21 +71,11 @@
           ancelButtonText: '取消',
         }).then(() => {
 //          删除请求
-          this.listLoading = true
-          this.$http.post('api/tree/delete', {tid: row.tid}).then(res => {
-            if (res.data.code == '200') {
-              this.$message({
-                message: '删除成功!',
-                type: 'success'
-              })
-              this.getList()
-            }
-          }, err => {
-            console.log(err)
-            this.listLoading = false
+          this.$message({
+            message: '删除成功!',
+            type: 'success'
           })
         }).catch(() => {
-          this.listLoading = false
         })
       },
       batchRemove () {
@@ -97,34 +83,24 @@
           confirmButtonText: '确定',
           ancelButtonText: '取消',
         }).then(() => {
-          this.listLoading = true
-          this.$http.post('api/tree/deleteList', {tids: this.selectArr}).then(res => {
-            if (res.data.code == '200') {
-              this.selectArr = []
-              this.$refs.multipleTable.clearSelection()
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              })
-              this.getList()
-            }
-          }, err => {
-            console.log(err)
+          this.selectArr = []
+          this.$refs.multipleTable.clearSelection()
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
           })
         }).catch(() => {
         })
       },
       handleCurrentChange (val) {
         this.page = val
-        this.listLoading = false
-        this.getList()
       }
     }
   }
 </script>
 
 <style lang="scss">
-  .Tree {
+  .Comment {
 
   }
 </style>

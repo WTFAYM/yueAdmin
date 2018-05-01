@@ -2,39 +2,43 @@
   <div class="ActiveItem" v-if="List!=null">
     <div class="ActiveItem-left">
       <div class="ActiveItem-img">
-        <img v-lazy="'http://139.199.188.40/img/01.jpg'">
+        <img v-lazy="List.img">
       </div>
       <div class="ActiveItem-base">
-        <div class="ActiveItem-detail"><span class="ActiveItem-title lt4">活动标题</span><span class="ActiveItem-value">震惊！**竟然在**地方干这种事情!</span>
+        <div class="ActiveItem-detail"><span class="ActiveItem-title lt4">活动标题</span><span class="ActiveItem-value">{{List.title}}</span>
         </div>
         <div class="ActiveItem-detail">
           <span class="ActiveItem-title lt3">创建人</span><span class="ActiveItem-value">
-          <a>梁非凡</a></span>
+          <a>{{List.username}}</a></span>
         </div>
         <div class="ActiveItem-detail"><span class="ActiveItem-title lt2">标签</span><span
-          class="ActiveItem-value">足球</span>
+          class="ActiveItem-value">{{List.label}}</span>
         </div>
-        <div class="ActiveItem-detail"><span class="ActiveItem-title lt4">创建时间</span><span class="ActiveItem-value">2018-04-01 11:11</span>
+        <div class="ActiveItem-detail"><span class="ActiveItem-title lt4">创建时间</span><span
+          class="ActiveItem-value">{{List.ctime | DateTran}}</span>
         </div>
       </div>
     </div>
     <div class="ActiveItem-right">
       <div class="ActiveItem-info">
-        <div class="ActiveItem-detail"><span class="ActiveItem-title lt4">开始时间</span><span class="ActiveItem-value">2018-04-01 11:11</span>
+        <div class="ActiveItem-detail"><span class="ActiveItem-title lt4">开始时间</span><span
+          class="ActiveItem-value">{{List.start | DateTran}}</span>
         </div>
-        <div class="ActiveItem-detail"><span class="ActiveItem-title lt4">结束时间</span><span class="ActiveItem-value">2018-04-01 11:11</span>
+        <div class="ActiveItem-detail"><span class="ActiveItem-title lt4">结束时间</span><span
+          class="ActiveItem-value">{{List.end | DateTran}}</span>
         </div>
       </div>
       <div class="ActiveItem-member">
-        <p>活动成员:<span>20/30</span></p>
+        <p>活动成员:<span>{{userList.length}}/{{List.max}}</span></p>
         <div class="ActiveItem-member-list">
-          <span v-for="(item,index) in 20" :key="index" class="memberList-item" @click="toUser(index)">刘醒</span>
+          <span v-for="(item,index) in userList" :key="index" class="memberList-item"
+                @click="toUser(index)">{{item.username}}</span>
         </div>
       </div>
       <div class="ActiveItem-content">
         <p>活动简介:</p>
         <div class="ActiveItem-content-detail">
-          <span>这里是测试内容这里是测试内容这里是测试内容这里是测试内容这里是测试内容这里是测试内容这里是测试内容这里是测试内容这里是测试内容</span>
+          <span>{{List.content}}</span>
         </div>
       </div>
     </div>
@@ -45,18 +49,22 @@
     name: 'List',
     data () {
       return {
-        userList: null
+        userList: []
       }
     },
     props: ['List'],
     created () {
-      console.log(this.activeItem)
+      console.log(this.List)
+      this.$http.post('api/actUser/getMember', {aid: this.List.aid}).then(res => {
+        if (res.data.code == '200') {
+          console.log(res)
+          this.userList = res.data.data
+        }
+      }, err => {
+        console.log(err)
+      })
     },
     methods: {
-      getMember () {
-//        根据活动id 找到成员，获取到成员用户名以及id
-//        this.userList
-      },
       toUser (uid) {
         console.log(uid)
       }

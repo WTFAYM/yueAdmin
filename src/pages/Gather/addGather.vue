@@ -26,6 +26,9 @@
             class="avatar-uploader"
             action="#"
             :show-file-list="false"
+            :auto-upload="false"
+            :drag="true"
+            :http-request = "uploadImage"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
             <img v-if="imgUrl" :src="imgUrl" class="avatar">
@@ -59,6 +62,9 @@
       },
       beforeAvatarUpload (file) {
         this.imgUrl = URL.createObjectURL(file)
+      },
+      uploadImage(){
+
       }
     },
     created () {}

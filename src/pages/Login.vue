@@ -8,7 +8,7 @@
       <el-form-item prop="checkPass">
         <el-input type="password" placeholder="密码" clearable v-model="loginForm.checkPass"></el-input>
       </el-form-item>
-      <el-checkbox v-model="checked" class="remember" checked>记住密码</el-checkbox>
+      <el-checkbox v-model="checked" class="remember" checked>记住账号</el-checkbox>
       <el-form-item style="width:100%;">
         <el-button style="width:100%;" :loading="logining" @click="submitLogin('loginForm2')">登录</el-button>
       </el-form-item>
@@ -24,7 +24,7 @@
         checked: true,
         loginForm: {
           account: 'admin',
-          checkPass: '22606278'
+          checkPass: ''
         },
         loginRules: {
           account: {
@@ -40,24 +40,33 @@
         }
       }
     },
+    created () {
+
+    },
     methods: {
       submitLogin (form) {
         this.$refs[form].validate((valid) => {
           if (valid) {
             this.logining = true
             let loginParam = {username: this.loginForm.account, password: this.loginForm.checkPass}
-            this.$http.post('/api/loginData', loginParam).then(res => {
+            this.$http.post('api/admin/login', loginParam).then(res => {
               this.logining = false
-              if (res.data.username === loginParam.username && res.data.password === loginParam.password) {
-                sessionStorage.setItem('admin', loginParam)
+              if (res.data.code == '200') {
+                sessionStorage.setItem('admin', res.data.data)
                 this.$router.push({
                   name: 'home'
                 })
               } else {
-                console.log('登录失败')
+                this.$message({
+                  message: '用户名或密码错误',
+                  type: 'warning'
+                })
               }
             }, err => {
-              console.log(err)
+              this.$message({
+                message: '网络错误',
+                type: 'warning'
+              })
             })
           }
         })

@@ -4,20 +4,17 @@
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="queryForm">
         <el-form-item>
-          <el-input v-model="queryForm.name" placeholder="输入用户名"></el-input>
+          <el-input v-model="queryForm.username" placeholder="输入用户名"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">查询</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="handleAdd">新增</el-button>
+          <el-button type="primary" @click="getListByName">查询</el-button>
         </el-form-item>
       </el-form>
     </el-col>
 
     <!--列表-->
     <el-table v-loading="listLoading" ref="multipleTable" @selection-change="selectUser" highlight-current-row
-              :data="userInfo"
+              :data="userList"
               style="width: 100%;">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column type="index" width="60"></el-table-column>
@@ -28,14 +25,22 @@
       </el-table-column>
       <el-table-column prop="username" label="用户名" width="120"></el-table-column>
       <el-table-column prop="phone" label="手机" width="130"></el-table-column>
-      <el-table-column prop="birthday" label="生日" width="130"></el-table-column>
-      <el-table-column label="性别" width="60">
+      <el-table-column label="生日" width="130">
         <template slot-scope="props">
-          <span>{{props.row.gender}}</span>
+          <span>{{props.row.birthday | DateTranDay}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="性别" width="80">
+        <template slot-scope="props">
+          <span>{{props.row.gender | genderTran}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="summary" label="个性签名"></el-table-column>
-      <el-table-column prop="state" label="状态" width="100"></el-table-column>
+      <el-table-column label="状态" width="80">
+        <template slot-scope="props">
+          <span>{{props.row.state | stateTran}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="150">
         <template slot-scope="scope">
           <el-button
@@ -59,52 +64,9 @@
                      style="float:right;" :current-page="page"></el-pagination>
     </el-col>
 
-    <!--新增-->
-    <el-dialog title="新增" v-model="addFormVisible">
-      <el-form :model="addForm" label-width="80px" :rules="addFormRules">
-        <div class="addAvatar">
-          <span>头像</span>
-          <el-upload
-            class="avatar-uploader"
-            action="#"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="addForm.avatar" :src="addForm.avatar" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </div>
-        <el-form-item label="用户名" prop="username">
-          <el-input class="mine-input" v-model="addForm.username" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="性别">
-          <el-radio-group v-model="addForm.gender">
-            <el-radio class="radio" :label="1">男</el-radio>
-            <el-radio class="radio" :label="2">女</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="生日">
-          <el-date-picker v-model="addForm.birthday" type="date"></el-date-picker>
-        </el-form-item>
-        <el-form-item label="手机">
-          <el-input class="mine-input" v-model="addForm.phone"></el-input>
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-input v-model="addForm.state"></el-input>
-        </el-form-item>
-        <el-form-item label="个性签名">
-          <el-input v-model="addForm.address" type="textarea"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="addFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addFormVisible = false" :loading="addLoading">确 定</el-button>
-      </div>
-    </el-dialog>
-
     <!--编辑-->
     <el-dialog title="编辑" v-model="editFormVisible">
-      <el-form :model="editForm" label-width="80px" :rules="addFormRules">
+      <el-form :model="editForm" label-width="80px" :rules="editFormRules">
         <div class="addAvatar">
           <span>头像</span>
           <el-upload
@@ -152,37 +114,23 @@
     data () {
       return {
         queryForm: {
-          name: ''
+          username: ''
         },
-        userInfo: [],
+        userList: [],
         selectUserNum: [],
         total: 0,
         page: 1,
         pageSize: 10,
         listLoading: false,
-        statNum: 0,
-        endNum: 0,
-//        新增界面数据
-        addFormRules: {
+//        编辑
+        editFormRules: {
           username: [
             {required: true, message: '请输入用户名', trigger: 'blur'}
           ]
         },
-        addForm: {
-          avatar: '',
-          username: '',
-          gender: 1,
-          phone: '',
-          birthday: '',
-          state: 0,
-          summary: ''
-        },
-//        是否显示新增窗口
-        addFormVisible: false,
-        addLoading: false,
-//        编辑
         editFormVisible: false,
         editLoading: false,
+        currentEditForm: null,
         editForm: {
           avatar: '',
           username: '',
@@ -199,21 +147,72 @@
       handleEdit (index, row) {
         this.editFormVisible = true
         this.editForm = Object.assign({}, row)
+        this.currentEditForm = Object.assign({}, this.editForm)
       },
       editSubmit () {
-        this.editFormVisible = false
+        this.listLoading = true
+        if (!this.checkEdit()) {
+          this.$message({
+            message: '修改成功',
+            type: 'success'
+          })
+          this.editFormVisible = false
+          this.listLoading = false
+          return
+        }
+        let params = this.editForm
+        params.birthday = tools.DateTranDay(params.birthday)
+        this.$http.post('/api/user/update', params).then(res => {
+          if (res.data.code == 200) {
+            this.getList()
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            })
+            this.editFormVisible = false
+            this.listLoading = false
+          }
+        }, err => {
+          this.$message({
+            message: '数据异常',
+            type: 'success'
+          })
+          this.listLoading = false
+        })
+      },
+      checkEdit () {
+        let result = false
+        for (let key in this.currentEditForm) {
+          if (key == 'birthday') {
+            result = !(new Date(this.currentEditForm[key]).getTime() == new Date(this.editForm[key]).getTime())
+            break
+          } else if (this.currentEditForm[key] !== this.editForm[key]) {
+            result = true
+            break
+          }
+        }
+        return result
       },
       handleDelete (index, row) {
         this.$confirm('确认删除该记录吗?', '提示', {
           type: 'warning'
         }).then(() => {
-//          this.listLoading = true
-//          请求删除
-          this.$message({
-            message: '删除成功',
-            type: 'success'
+          this.listLoading = true
+          this.$http.post('/api/user/delete', {uid: row.uid}).then(res => {
+            if (res.data.code == 200) {
+              this.getList()
+              this.$message({
+                message: '删除成功',
+                type: 'success'
+              })
+            }
+          }, err => {
+            this.$message({
+              message: '服务器异常，请稍后再试',
+              type: 'warning'
+            })
+            this.listLoading = false
           })
-//          this.getUsers()
         })
       },
 //      批量删除
@@ -222,11 +221,30 @@
           confirmButtonText: '确定',
           ancelButtonText: '取消',
         }).then(() => {
-          this.selectUserNum = []
-          this.$refs.multipleTable.clearSelection()
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
+          this.listLoading = true
+          this.$http.post('api/user/deleteList', {uids: this.selectUserNum}).then(res => {
+            if (res.data.code == '200') {
+              this.selectUserNum = []
+              this.$refs.multipleTable.clearSelection()
+              this.getList()
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+              this.listLoading = false
+            }
+          }, err => {
+            this.$message({
+              type: 'warning',
+              message: '服务器异常，请稍后再试!'
+            })
+            this.listLoading = false
+          }).catch(() => {
+            this.$message({
+              type: 'warning',
+              message: '服务器异常，请稍后再试!'
+            })
+            this.listLoading = false
           })
         }).catch(() => {
         })
@@ -236,7 +254,8 @@
       },
       handleCurrentChange (val) {
         this.page = val
-        this.getUserData()
+        this.listLoading = true
+        this.getList()
       },
       handleAvatarSuccess (res, file) {
 //        this.editUrl = URL.createObjectURL(file)
@@ -250,26 +269,43 @@
       beforeEditAvatarUpload (file) {
         this.editForm.avatar = URL.createObjectURL(file)
       },
-      getUserData () {
-        this.listLoading = true
-        let para = {
-          page: this.page
-        }
-        this.$http.post('/api/getUserData', para).then((res) => {
-          this.startNum = (para.page - 1) * this.pageSize
-          if (para.page * this.pageSize < this.total) {
-            this.endNum = para.page * this.pageSize
-          } else {
-            this.endNum = this.total
+      getList () {
+        this.$http.post('/api/user/list', {currentPage: this.page}).then(res => {
+          if (res.data.code == 200) {
+            this.total = res.data.data.recordCount
+            this.userList = res.data.data.data
+            this.listLoading = false
           }
-          let data = res.data.slice(this.startNum, this.endNum)
-          this.userInfo = data
-          this.total = res.data.length
+        }, err => {
           this.listLoading = false
+          this.$message({
+            type: 'warning',
+            message: '服务器异常，请稍后再试!'
+          })
         })
       },
       selectUser (val) {
-        this.selectUserNum = val
+        this.selectUserNum = val.map(val => val.uid)
+      },
+      getListByName () {
+        let params = {
+          conditions: {
+            username_like: this.queryForm.username
+          },
+          orders: {
+            uid: 'asc'
+          },
+          currentPage: 1
+        }
+        this.$http.post('/api/user/getListByName', params).then(res => {
+          if (res.data.code == 200) {
+            this.total = res.data.data.recordCount
+            this.userList = res.data.data.data
+            this.listLoading = false
+          }
+        }, err => {
+          this.listLoading = false
+        })
       }
     },
     filters: {
@@ -292,11 +328,9 @@
         }
       }
     },
-    mounted () {
-      this.getUserData()
-    },
     created () {
-      this.getUserData()
+      this.listLoading = true
+      this.getList()
     }
   }
 

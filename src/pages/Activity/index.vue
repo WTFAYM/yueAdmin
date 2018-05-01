@@ -7,13 +7,13 @@
           <el-input v-model="queryForm.name" placeholder="输入用户名"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click.native="search">查询</el-button>
+          <el-button type="primary" @click="search">查询</el-button>
         </el-form-item>
       </el-form>
     </el-col>
 
     <!--列表-->
-    <el-table v-loading="listLoading" ref="multipleTable" :data="tableData3" tooltip-effect="dark" style="width: 100%"
+    <el-table v-loading="listLoading" ref="multipleTable" :data="list" tooltip-effect="dark" style="width: 100%"
               @selection-change="handleSelectionChange">
       <el-table-column type="expand">
         <!--通过props.row.属性来获取行属性-->
@@ -24,7 +24,7 @@
       </el-table-column>
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="创建时间" width="200">
-        <template slot-scope="scope">{{ scope.row.ctime }}</template>
+        <template slot-scope="scope">{{ scope.row.ctime | DateTran }}</template>
       </el-table-column>
       <el-table-column prop="username" label="用户名" width="120"></el-table-column>
       <el-table-column prop="max" label="人数" width="120"></el-table-column>
@@ -38,7 +38,7 @@
 
     <!--工具条/分页-->
     <el-col :span="24" class="toolbar">
-      <el-button type="danger" @click.native="batchRemove" :disabled="this.selectUserNum.length===0">批量删除</el-button>
+      <el-button type="danger" @click.native="batchRemove" :disabled="this.selectNum.length===0">批量删除</el-button>
       <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="pageSize"
                      :total="total"
                      style="float:right;" :current-page="page"></el-pagination>
@@ -58,105 +58,52 @@
         queryForm: {
           name: ''
         },
-        selectUserNum: [], //记录选中项
-        total: 20,
+        selectNum: [],
+        total: 0,
         page: 1,
         pageSize: 10,
         listLoading: false,
-        statNum: 0,
-        endNum: 0,
-        tableData3:
-          [
-            {
-              id: 1,
-              ctime: '2016-05-03',
-              username: '王小虎',
-              title: '上海市普陀区金沙江路 1518 弄',
-              max: '20'
-            },
-            {
-              ctime: '2016-05-03',
-              username: '王小虎',
-              title: '上海市普陀区金沙江路 1518 弄',
-              max: '20'
-            },
-            {
-              ctime: '2016-05-03',
-              username: '王小虎',
-              title: '上海市普陀区金沙江路 1518 弄',
-              max: '20'
-            },
-            {
-              ctime: '2016-05-03',
-              username: '王小虎',
-              title: '上海市普陀区金沙江路 1518 弄',
-              max: '20'
-            },
-            {
-              ctime: '2016-05-03',
-              username: '王小虎',
-              title: '上海市普陀区金沙江路 1518 弄',
-              max: '20'
-            },
-            {
-              ctime: '2016-05-03',
-              username: '王小虎',
-              title: '上海市普陀区金沙江路 1518 弄',
-              max: '20'
-            },
-            {
-              ctime: '2016-05-02',
-              username: '王小虎',
-              title: '上海市普陀区金沙江路 1518 弄',
-              max: '20'
-            },
-            {
-              ctime: '2016-05-04',
-              username: '王小虎',
-              title: '上海市普陀区金沙江路 1518 弄',
-              max: '20'
-            },
-            {
-              ctime: '2016-05-01',
-              username: '王小虎',
-              title: '上海市普陀区金沙江路 1518 弄',
-              max: '20'
-            },
-            {
-              ctime: '2016-05-08',
-              username: '王小虎',
-              title: '上海市普陀区金沙江路 1518 弄',
-              max: '20'
-            },
-            {
-              ctime: '2016-05-06',
-              username: '王小虎',
-              title: '上海市普陀区金沙江路 1518 弄',
-              max: '20'
-            },
-            {
-              ctime: '2016-05-07',
-              username: '王小虎',
-              title: '上海市普陀区金沙江路 1518 弄',
-              max: '20'
-            }],
+        list: []
       }
+    },
+    created () {
+      this.listLoading = true
+      this.getList()
     },
     methods: {
       search () {
-        console.log(this.queryForm.name)
-
+        let params = {
+          username: this.queryForm.name
+        }
+        this.$http.post('api/active/getActiveByUser', params).then(res => {
+          if (res.data.code == 200) {
+            this.total = res.data.data.recordCount
+            this.list = res.data.data.data
+            this.listLoading = false
+          }
+        }, err => {
+          this.listLoading = false
+        })
       },
       handleDelete (index, row) {
         this.$confirm('确认删除？', '提示', {
           confirmButtonText: '确定',
           ancelButtonText: '取消',
         }).then(() => {
-          this.$message({
-            message: '删除成功!',
-            type: 'success'
+//          删除请求
+          this.listLoading = true
+          this.$http.post('api/active/delete', {aid: row.aid}).then(res => {
+            if (res.data.code == '200') {
+              this.$message({
+                message: '删除成功!',
+                type: 'success'
+              })
+              this.getList()
+            }
+          }, err => {
           })
         }).catch(() => {
+          this.listLoading = false
         })
       },
       batchRemove () {
@@ -164,41 +111,46 @@
           confirmButtonText: '确定',
           ancelButtonText: '取消',
         }).then(() => {
-          this.selectUserNum = []
-          this.$refs.multipleTable.clearSelection()
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
+          this.$http.post('api/active/deleteList', {aids: this.selectNum}).then(res => {
+            if (res.data.code == '200') {
+              this.selectNum = []
+              this.$refs.multipleTable.clearSelection()
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+              this.getList()
+            }
+          }, err => {
+            console.log(err)
           })
-        }).catch(() => {
         })
-      },
-      handleAdd () {
-        this.addFormVisible = true
       },
       handleCurrentChange (val) {
         this.page = val
-      },
-      getData () {
         this.listLoading = true
+        this.getList()
+      },
+      getList () {
         let para = {
-          page: this.page
+          currentPage: this.page
         }
-        this.$http.post('/api/getUserData', para).then((res) => {
-          this.startNum = (para.page - 1) * this.pageSize
-          if (para.page * this.pageSize < this.total) {
-            this.endNum = para.page * this.pageSize
-          } else {
-            this.endNum = this.total
+        this.$http.post('/api/active/activeList', para).then((res) => {
+          if (res.data.code == 200) {
+            this.total = res.data.data.recordCount
+            this.list = res.data.data.data
+            this.listLoading = false
           }
-          let data = res.data.slice(this.startNum, this.endNum)
-          this.userInfo = data
-          this.total = res.data.length
+        }, err => {
           this.listLoading = false
+          this.$message({
+            type: 'warning',
+            message: '服务器异常，请稍后再试!'
+          })
         })
       },
       handleSelectionChange (val) {
-        this.selectUserNum = val
+        this.selectNum = val.map(val => val.aid)
       }
     }
   }

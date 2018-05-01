@@ -2,11 +2,11 @@
   <div class="DynamicItem" v-if="List!=null">
     <div class="DynamicItem-top">
       <h5>动态内容：</h5>
-      <p>{{content}}</p>
+      <p>{{List.content}}</p>
     </div>
     <h5>动态图片</h5>
     <div class="DynamicItem-bottom">
-      <img v-lazy="'http://139.199.188.40/img/01.jpg'" v-for="(item,index) in 9" :key="index">
+      <img v-lazy="item" v-for="(item,index) in imgs" :key="index">
     </div>
   </div>
 </template>
@@ -15,10 +15,14 @@
     name: 'DynamicItem',
     data () {
       return {
-        content: '这里是测试内容这里是测试内容这里是测试内容这里是测试内容这里是测试内容这里是测试内容这里是测试内容这里是测试内容'
+        imgs: []
       }
     },
-    props: ['List']
+    props: ['List'],
+    created () {
+      this.imgs = this.List.img.split('|')
+      console.log(this.imgs)
+    }
   }
 </script>
 

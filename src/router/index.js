@@ -14,6 +14,7 @@ import addSpread from '../pages/Spread/addSpread.vue'
 import Gather from '../pages/Gather'
 import addGather from '../pages/Gather/addGather.vue'
 import Tree from '../pages/Tree'
+import Comment from '../pages/Comment'
 import test from '../pages/test.vue'
 
 Vue.use(Router)
@@ -52,6 +53,11 @@ const routes = [
         path: '/Dynamic',
         name: 'dynamic',
         component: Dynamic
+      },
+      {
+        path: '/Comment',
+        name: 'comment',
+        component: Comment
       },
       {
         path: '/customService',

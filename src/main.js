@@ -6,6 +6,8 @@ import router from './router'
 // import VueResource from 'vue-resource'
 import axios from 'axios'
 // import VueAxios from 'vue-axios'
+import tools from './utils/tools'
+import filters from './filters'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import VueLazyload from 'vue-lazyload'
@@ -15,9 +17,11 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
+window.tools = tools
 Vue.use(VueQuillEditor, /* { default global options } */)
 Vue.config.productionTip = false
 Vue.use(Element)
+Vue.use(filters)
 // Vue.use(VueResource)
 // axios
 // Vue.use(VueAxios, axios)
@@ -33,7 +37,6 @@ router.beforeEach((to, form, next) => {
   const nextRoute = ['home', 'user', 'dynamic', 'label', 'custom', 'spread', 'addSpread', 'tree', 'notFound', 'gather', 'addGather', 'activity']
   let isLogin = sessionStorage.getItem('admin')
   if (nextRoute.indexOf(to.name) >= 0) {
-    console.log(isLogin)
     if (!isLogin) {
       next(
         {name: 'login'}
@@ -50,9 +53,5 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: {App},
-  // 组件创建前，进行异步数据数据请求
-  beforeCreate () {
-    this.$store.dispatch('getAllData', this)
-  }
+  components: {App}
 })
